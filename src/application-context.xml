@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   		http://www.springframework.org/schema/beans/spring-beans.xsd
+	   		http://www.springframework.org/schema/context
+	   		http://www.springframework.org/schema/context/spring-context.xsd">
+	   		
+	<context:property-placeholder location="classpath:sport.properties" />
+	
+	<bean id="weatherService" class="fr.nnyimc.sports.services.GoodWeather"></bean>
+    <bean id="randomWeatherService" class="fr.nnyimc.sports.services.RandomWeather">
+    	<property name="weatherFortunes" value="${cricket.weather}"></property>
+    </bean>
+    <bean id="baseballCoach" class="fr.nnyimc.sports.BaseballCoach">
+    	<constructor-arg ref="weatherService" />
+    </bean>
+    
+    <bean id="tennisCoach" class="fr.nnyimc.sports.TennisCoach">
+    	<constructor-arg ref="weatherService"/>    
+    </bean>
+    
+    <bean id="cricketCoach" class="fr.nnyimc.sports.CricketCoach">
+    	<property name="weatherService" ref="randomWeatherService"></property>
+    	<property name="emailAddress" value="${cricket.email}"></property>
+    	<property name="team" value="${cricket.team}"></property>
+    </bean>
+    
+    <bean id="logConfiguration" class="fr.nnyimc.sports.config.Config">
+    	<property name="rootLoggerLevel" value="FINEST"></property>
+    	<property name="printedLoggerLevel" value="FINEST"></property>
+    </bean>
+
+</beans>
